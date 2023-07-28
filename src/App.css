@@ -28,6 +28,20 @@
   color: #61dafb;
 }
 
+.webHeader {
+  background-color: red;
+  min-height: 50px;
+  text-align: center;
+  color: white;
+}
+
+.img {
+  background-color: white;
+  max-height: 200px;
+  max-width: 200px;
+  display: flex;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
