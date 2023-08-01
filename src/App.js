@@ -51,7 +51,7 @@ const dataSource=[
     description: '柳州螺狮粉',
     price: 25,
     commemt: 'comment',
-    rate: 4,
+    rate: !'rate',
   },
   {
     id: 2,
@@ -59,6 +59,8 @@ const dataSource=[
     title: '铁板卤肉饭',
     description: '秋哥湘式铁板炒米粉米饭',
     price: 20,
+    commemt: 'comment',
+    rate: !'rate',
   },
   {
     id: 3,
@@ -66,6 +68,8 @@ const dataSource=[
     title: '香辣鸡排饭',
     description: '红布坊鸡排饭',
     price: 18.8,
+    commemt: 'comment',
+    rate: !'rate',
   },
 ]
 const getDataSource=()=>{
@@ -73,34 +77,35 @@ const getDataSource=()=>{
 }
 
 function App() {
-  const [dataSource,setDataSource]=useState([]);
+  const [dataSource, setDataSource] = useState([]);
 
-  useEffect(()=>{
-    const data=getDataSource();
+  useEffect(() => {
+    const data = getDataSource();
     setDataSource(data);
-  },[]);
+  }, []);
 
-  const showComment=(index)=>{
-    const data=dataSource[index];
-    if(!data){
+  const showComment = (index) => {
+    const data = dataSource[index];
+    if (!data) {
       return;
     }
-    data.show=!data.show;
-    setDataSource(dataSource.map(data=>({...data})));
-  }
-  const showButton=(index,rate)=>{
-    const data=dataSource[index];
-    if(!data[index].rate){
-      !data.show;
-    }
-  }
+    data.show = !data.show;
+    setDataSource(dataSource.map(data => ({ ...data })));
+  };
+
   const onChangeRate = (index, rate) => {
     // 将 dataSource 拷贝到局部变量 data
     const data = dataSource.map(d => ({ ...d }));
     data[index].rate = rate;
+    data[index].isRate = true; 
     setDataSource(data);
-  }
+  };
 
+  const onChangeComment = (index, comment) => {
+    const data = dataSource.map(d => ({ ...d }));
+    data[index].comment = comment;
+    setDataSource(data);
+  };
 
   return (
     <div className="App">
@@ -127,27 +132,37 @@ function App() {
                           <p>{data.price}</p>
                     </Col>
                     <Col className='gutter-row' span={3} offset={22}>
-                      <Button className='comment-button' style={data.rate?ButtonCloseStyle:ButtonStyle} onClick={() => showComment(index)}>
-                        { data.rate ? '已评价' : '评价' }
+                      <Button
+                        className='comment-button'
+                        style={data.isRate ? ButtonCloseStyle : ButtonStyle}
+                        onClick={() => showComment(index)} 
+                      >
+                        {data.isRate ? '已评价' : '评价'}
                       </Button>
                     </Col>
                     {
                       data.show?(
                         <div>
-                          <TextArea autoSize="true" className='inputBoxBananaxxx' id='bananaInputxx' value={data.comment}></TextArea>
-                          <Rate
-                            className='rateBoxBananasss'
-                            id = 'rateBanana' 
-                            value={data.rate}
-                            onChange={(val) => { onChangeRate(index, val) }}
-                          />
+                         <TextArea
+                          autoSize={true}
+                          className='inputBoxBananaxxx'
+                          id='bananaInputxx'
+                          value={data.comment}
+                          onChange={(e) => onChangeComment(index, e.target.value)}
+                          disabled={data.isRate} 
+                        />
+                        <Rate
+                          className='rateBoxBananasss'
+                          id='rateBanana'
+                          value={data.rate}
+                          onChange={(value) => onChangeRate(index, value)}
+                          disabled={data.isRate}
+                        />
                         </div>
                       ):null
                     }
                   </Row>
                 </Content>
-                
-               
                 {index!==data.length?<Divider/>:null}
               </div>
             )
@@ -158,5 +173,4 @@ function App() {
     </div>
   );
 }
-// 
 export default App;
