@@ -52,6 +52,7 @@ const dataSource=[
     price: 25,
     commemt: 'comment',
     rate: !'rate',
+    showFinishButton: true,
   },
   {
     id: 2,
@@ -61,6 +62,7 @@ const dataSource=[
     price: 20,
     commemt: 'comment',
     rate: !'rate',
+    showFinishButton: true,
   },
   {
     id: 3,
@@ -70,6 +72,7 @@ const dataSource=[
     price: 18.8,
     commemt: 'comment',
     rate: !'rate',
+    showFinishButton: true,
   },
 ]
 const getDataSource=()=>{
@@ -93,11 +96,17 @@ function App() {
     setDataSource(dataSource.map(data => ({ ...data })));
   };
 
+  const finishButton = (index)=>{
+    const data =dataSource[index];
+    data.isRate=true;
+    data.show=!data.show;
+    data.showFinishButton=false;
+    setDataSource(dataSource.map(data => ({ ...data })));
+  }
+
   const onChangeRate = (index, rate) => {
     const data = dataSource.map(d => ({ ...d }));
     data[index].rate = rate;
-    data[index].isRate = true; 
-    data[index].show = !data[index].show;
     setDataSource(data);
   };
 
@@ -143,22 +152,31 @@ function App() {
                     {
                       data.show?(
                         <div>
-                         <TextArea
-                          autoSize={true}
-                          className='inputBoxBananaxxx'
-                          id='bananaInputxx'
-                          value={data.comment}
-                          onChange={(e) => onChangeComment(index, e.target.value)}
-                          disabled={data.isRate} 
-                        />
-                        <Rate
-                          className='rateBoxBananasss'
-                          id='rateBanana'
-                          value={data.rate}
-                          onChange={(value) => onChangeRate(index, value)}
-                          disabled={data.isRate}
-                          
-                        />
+                          <div>
+                            <TextArea
+                            autoSize={true}
+                            className='inputBoxBananaxxx'
+                            id='bananaInputxx'
+                            value={data.comment}
+                            onChange={(e) => onChangeComment(index, e.target.value)}
+                            disabled={data.isRate} 
+                            />
+                            <Rate
+                              className='rateBoxBananasss'
+                              id='rateBanana'
+                              value={data.rate}
+                              onChange={(value) => onChangeRate(index, value)}
+                              disabled={data.isRate}
+                              
+                            />
+                          </div>
+                          <div>
+                            {data.showFinishButton?(
+                              <Button className='finish-button' style={ButtonStyle} onClick={()=>finishButton(index)}>
+                                Finish
+                              </Button>
+                            ):null}
+                          </div>
                         </div>
                       ):null
                     }
