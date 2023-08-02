@@ -94,10 +94,10 @@ function App() {
   };
 
   const onChangeRate = (index, rate) => {
-    // 将 dataSource 拷贝到局部变量 data
     const data = dataSource.map(d => ({ ...d }));
     data[index].rate = rate;
     data[index].isRate = true; 
+    data[index].show = !data[index].show;
     setDataSource(data);
   };
 
@@ -157,6 +157,7 @@ function App() {
                           value={data.rate}
                           onChange={(value) => onChangeRate(index, value)}
                           disabled={data.isRate}
+                          
                         />
                         </div>
                       ):null
